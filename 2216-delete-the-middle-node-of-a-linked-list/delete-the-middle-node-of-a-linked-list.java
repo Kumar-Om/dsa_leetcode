@@ -16,14 +16,14 @@ class Solution {
         if(head.next==null){
             return null;
         }
+        fast=fast.next.next;
         while(fast!=null && fast.next!=null){
             fast=fast.next.next;
-            temp=slow;
             slow=slow.next;
         }
-       
-        temp.next=temp.next.next;
-        slow=null;
+        temp=slow;
+        slow.next=slow.next.next;
+        temp=null;
         return head;
     }
 }
