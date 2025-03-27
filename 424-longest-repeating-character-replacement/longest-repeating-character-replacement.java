@@ -12,13 +12,12 @@ class Solution {
             if((r-l+1)-fmax > k){
                 ch=s.charAt(l);
                 map[ch-'A']--;
-                
                 l++;
             }
-            if((r-l+1)-fmax<=k){
+            
                 maxi=Math.max(maxi,r-l+1);
                 r++;
-            }
+        
         }
         return maxi;
     }
