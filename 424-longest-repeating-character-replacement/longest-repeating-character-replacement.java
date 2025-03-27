@@ -14,10 +14,10 @@ class Solution {
                 map[ch-'A']--;
                 l++;
             }
-            
-                maxi=Math.max(maxi,r-l+1);
+            if ((r-l+1)-fmax <= k) {  
+                maxi = Math.max(maxi, r-l+1);
                 r++;
-        
+            }
         }
         return maxi;
     }
