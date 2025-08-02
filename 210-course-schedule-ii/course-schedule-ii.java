@@ -1,8 +1,10 @@
 class Solution {
+    boolean hasCycle=false;
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         ArrayList<ArrayList<Integer>>adj=new ArrayList<>();
         int V=numCourses;
         int e=prerequisites.length;
+        int k=0; //for res indexing
         int res[]=new int[V];
 
         for(int i=0;i<V;i++)adj.add(new ArrayList<>());
@@ -14,41 +16,42 @@ class Solution {
             adj.get(b).add(a);
         }
 
-        //khans algo
-        Queue<Integer>q=new LinkedList<>();
-        int c=0; 
-        int k=0; //for res index
 
-        int indegree[]=new int[V];
+        boolean vis[]=new boolean[V];
+        boolean inrecc[]=new boolean[V];
+        Stack<Integer>st=new Stack<>();
         for(int i=0;i<V;i++){
-            for(int v:adj.get(i)){
-                indegree[v]++;
+            if(!vis[i]){
+                dfs(adj,vis,inrecc,st,i);
             }
         }
-
-        for(int i=0;i<V;i++){
-            if(indegree[i]==0){
-                c++;
-                q.add(i);
-                res[k++]=i;
-            }
+        
+        if(hasCycle==true){
+            return new int[]{};
         }
 
-        while(!q.isEmpty()){
-            int u=q.poll();
-            for(int v:adj.get(u)){
-                indegree[v]--;
-                if(indegree[v]==0){
-                    c++;
-                    q.add(v);
-                    res[k++]=v;
-                }
+        while(!st.isEmpty()){
+            res[k++]=st.pop();
+        }
+        return res;
+
+    }
+
+    public void dfs(ArrayList<ArrayList<Integer>>adj,boolean vis[],boolean inrecc[],Stack<Integer>st,int u){
+        vis[u]=true;
+        inrecc[u]=true;
+
+        for(int v:adj.get(u)){
+            if(inrecc[v]==true){
+                hasCycle=true;
+                return;
+            }
+            else if(!vis[v]){
+                dfs(adj,vis,inrecc,st,v);
             }
         }
-
-        if(c==V)return res;
-        else return new int[]{};
-
-
+        inrecc[u]=false;
+        st.add(u);
+        return;
     }
 }
