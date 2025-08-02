@@ -13,36 +13,33 @@ class Solution {
 
             adj.get(b).add(a);   //b-->a
         }
-        //Khans algo ->cycle detection(bfs)
-        int c=0;
+    
 
-        int indegree[]=new int[V];
+        //dfs
+        boolean vis[]=new boolean[V];
+        boolean inrecc[]=new boolean[V];
+
         for(int i=0;i<V;i++){
-            for(int v:adj.get(i)){
-                indegree[v]++;
+            if(!vis[i] && dfsCycle(adj,vis,inrecc,i)){
+                return false;
             }
         }
+        return true;
+        
+    }
+    public boolean dfsCycle(ArrayList<ArrayList<Integer>>adj,boolean[] vis,boolean[] inrecc,int u){
+        vis[u]=true;
+        inrecc[u]=true;
 
-        Queue<Integer>q=new LinkedList<>();
-        for(int i=0;i<V;i++){
-            if(indegree[i]==0){
-                q.add(i);
-                c++;
+        for(int v:adj.get(u)){
+            if(!vis[v] && dfsCycle(adj,vis,inrecc,v)){
+                return true;
+            }
+            else if(inrecc[v]==true){
+                return true;
             }
         }
-
-        while(!q.isEmpty()){
-            int u=q.poll();
-            for(int v:adj.get(u)){
-                indegree[v]--;
-                if(indegree[v]==0){
-                    q.add(v);
-                    c++;
-                }
-            }
-        }
-
-        if(c==V) return true; //no cycle
-        else return false;// cycle exists
+        inrecc[u]=false;
+        return false;
     }
 }
