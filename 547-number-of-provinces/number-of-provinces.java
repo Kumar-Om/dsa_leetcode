@@ -7,18 +7,24 @@ class Solution {
         for(int i=0;i<n;i++){
             if(!vis[i]){
                 c++;
-                dfs(isConnected,i,vis,n);
+                bfs(isConnected,i,vis,n);
             }
         }
         return c;
     }
 
-    public void dfs(int[][] isConnected,int u,boolean[]vis,int n){
+    public void bfs(int[][] isConnected,int u,boolean[]vis,int n){
+        Queue<Integer>q=new LinkedList<>();
         vis[u]=true;
-        for(int v=0;v<n;v++){
-            if(!vis[v] &&  isConnected[u][v]==1){
-                dfs(isConnected,v,vis,n);
+        q.add(u);
 
+        while(!q.isEmpty()){
+            int U=q.poll();
+            for(int v=0;v<n;v++){
+                if(!vis[v] && isConnected[U][v]==1){
+                    q.add(v);
+                    vis[v]=true;
+                }
             }
         }
     }
