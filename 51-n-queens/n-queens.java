@@ -1,59 +1,45 @@
 class Solution {
-    List<List<String>>res=new ArrayList<>();
     public List<List<String>> solveNQueens(int n) {
-        List<String>board=new ArrayList<>();
+        List<List<String>> res= new ArrayList<>();
+        char board[][]=new char[n][n];
         for(int i=0;i<n;i++){
-            StringBuilder row=new StringBuilder();
-            for(int j=0;j<n;j++){
-                row.append(".");
-            }
-            board.add(row.toString());
+            Arrays.fill(board[i],'.');
         }
-        sol(board,0);
+
+        solve(0,n,res,board);
         return res;
     }
+    public boolean isSafe(int row,int col,int n,char[][]board){
+        for(int j=col;j>=0;j--){
+            if(board[row][j]=='Q')return false;
+        }
 
-    public void sol(List<String>board,int row){
-        //goal state
-        if(row==board.size()){
-            res.add(new ArrayList<>(board));
+        for(int i=row,j=col;i>=0 && j>=0;i--,j--){
+            if(board[i][j]=='Q')return false;
+        }
+
+        for(int i=row,j=col;i<n && j>=0;i++,j--){
+            if(board[i][j]=='Q')return false;
+        }
+        return true;
+    }
+
+    public void solve(int col,int n,List<List<String>> res,char board[][]){
+        if(col==n){
+            List<String> temp=new ArrayList<>();
+            for(int i=0;i<n;i++){
+                temp.add(new String(board[i]));
+            }
+            res.add(new ArrayList<>(temp));
             return;
         }
 
-        //exploration st
-        for(int i=0;i<board.size();i++){
-            if(isValid(board,row,i)){
-                //action
-                StringBuilder r=new StringBuilder(board.get(row));
-                r.setCharAt(i,'Q');
-                board.set(row,r.toString());//replacing
-
-                //recurr
-                sol(board,row+1);
-
-                //undo
-                r.setCharAt(i,'.');
-                board.set(row,r.toString());
+        for(int row=0;row<n;row++){
+            if(isSafe(row,col,n,board)){
+                board[row][col]='Q';
+                solve(col+1,n,res,board);
+                board[row][col]='.';
             }
-            
         }
-    }
-
-    public boolean isValid(List<String>board,int row,int col){
-        //up dirn
-        for(int i=row;i>=0;i--){
-            if(board.get(i).charAt(col)=='Q')return false;
-        }
-
-        //right up diagonal
-        for(int i=row,j=col;i>=0 && j<board.size();i--,j++){
-            if(board.get(i).charAt(j)=='Q')return false;
-        }
-
-        //left up diagonal
-        for(int i=row,j=col;i>=0 && j>=0;i--,j--){
-            if(board.get(i).charAt(j)=='Q')return false;
-        }
-        return true;
     }
 }
