@@ -1,22 +1,20 @@
 class Solution {
     public String minWindow(String s, String t) {
-        int high=0,low=0;
-        int minLen=Integer.MAX_VALUE;
         int need[]=new int[256];
         int have[]=new int[256];
-        String res="";
-
         for(int i=0;i<t.length();i++){
-            need[t.charAt(i)]++;
+            char ch=t.charAt(i);
+            need[ch]++;
         }
-
+        int low=0,high=0,mini=Integer.MAX_VALUE;
+        String res="";
         while(high<s.length()){
-            have[s.charAt(high)]++;
-            
-            while(check(need,have)){
-                if(high-low+1<minLen){
-                    minLen=high-low+1;
-                    res=s.substring(low,low+minLen);
+            char ch=s.charAt(high);
+            have[ch]++;
+            while(check(have,need)){
+                if(high-low+1<mini){
+                    mini=high-low+1;
+                    res=s.substring(low,low+mini);
                 }
                 have[s.charAt(low)]--;
                 low++;
@@ -26,9 +24,9 @@ class Solution {
         return res;
     }
 
-    public boolean check(int need[],int have[]){
+    public boolean check(int have[],int need[]){
         for(int i=0;i<256;i++){
-            if(have[i]<need[i]) return false;
+            if(have[i]<need[i])return false;
         }
         return true;
     }
