@@ -9,7 +9,7 @@ class Solution {
             while(map.get(ch)>1){
                 char c=s.charAt(low);
                 map.put(c,map.get(c)-1);
-                if(map.get(c)==0)map.remove(c);
+                //if(map.get(c)==0)map.remove(c);
                 low++;
             }
             maxi=Math.max(maxi,high-low+1);
