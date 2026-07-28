@@ -20,5 +20,6 @@ class Solution {
         }
 
         combinationSum(candidates,target,idx+1,res,temp,n);
+        //return;
     }
 }
