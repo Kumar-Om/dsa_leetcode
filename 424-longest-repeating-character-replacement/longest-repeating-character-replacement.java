@@ -11,6 +11,7 @@ class Solution {
             while((high-low+1)-maxFreq>k){
                 char c=s.charAt(low);
                 freq[c-'A']--;
+                maxFreq=Math.max(freq[ch-'A'],maxFreq);
                 low++;
             }
             maxi=Math.max(maxi,high-low+1);
