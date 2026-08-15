@@ -8,20 +8,27 @@
  * }
  */
 class Solution {
+    TreeNode res=null;
+    int total=0;
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(root==null||p==root||q==root)return root;
+        lcs(root,p,q);
+        return res;
+    }
+    public int lcs(TreeNode root,TreeNode p,TreeNode q){
+        if(root==null)return 0;
+        int self=0;
+        if(root==p || root==q){
+            self=1;
+        }
 
-        TreeNode l=lowestCommonAncestor(root.left,p,q);
-        TreeNode r=lowestCommonAncestor(root.right,p,q);
+        int left=lcs(root.left,p,q);
+        int right=lcs(root.right,p,q);
+        total=self+left+right;
 
-        if(l==null){
-            return r;
+        if(total==2 && res==null){
+            res=root;
         }
-        else if(r==null){
-            return l;
-        }
-        else{
-            return root;
-        }
+        return total;
+
     }
 }
